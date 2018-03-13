@@ -14,6 +14,7 @@ app.use(express.static("./public"));
 app.use(compression());
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 if (process.env.NODE_ENV != "production") {
@@ -39,17 +40,21 @@ app.post("/welcome", (req, res) => {
         !req.body.firstname ||
         !req.body.lastname ||
         !req.body.email ||
-        !req.body.password_hash
+        !req.body.password
     ) {
         console.log("error");
+        res.sendFile(__dirname + "/index.html");
     } else {
-        getUser(
-            req.body.firstname,
-            req.body.lastname,
-            req.body.email,
-            req.body.password_hash
-        ).then(results => {
-            console.log("results", results);
+        let hashPass = hashPassword(req.body.password);
+        hashPass.then(hashPass => {
+            return getUser(
+                req.body.firstname,
+                req.body.lastname,
+                req.body.email,
+                hashPass
+            ).then(results => {
+                console.log("results", results);
+            });
         });
     }
 });

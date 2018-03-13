@@ -21,10 +21,6 @@ export default class Registration extends React.Component {
             this.setState({ newUser: resp.data });
         });
         console.log("statelog ", this.state);
-
-        //if that works then i can make the axios.post then go to server and make an app.post route to /welcome.
-        //console.log req.body and it should show me the input from user.
-        //if all works on server then hash pass and send dat ato db.
     }
     handleChange(e) {
         this.setState({
