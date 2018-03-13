@@ -1,36 +1,35 @@
 import React from "react";
+import axios from "axios";
 
 export default class Registration extends React.Component {
     constructor() {
-        super()
+        super();
         this.state = {
             firstname: "",
             lastname: "",
             email: "",
             password: ""
-
-        }
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    //make constructor here and pass in firstname = "" etc...
-
 
     handleSubmit(e) {
         e.preventDefault();
-        // console.log("click");
-        // axios.post goes here
-        axios.post("/welcome", this.state);
+        console.log("click");
+        axios.post("/welcome", this.state).then(resp => {
+            this.setState({ newUser: resp.data });
+        });
+        console.log("statelog ", this.state);
 
-        //after finish with constructor and handlechange thne i can work on this function which
-        //will give me back the whole input the user gave by console logging this.state here.
         //if that works then i can make the axios.post then go to server and make an app.post route to /welcome.
         //console.log req.body and it should show me the input from user.
         //if all works on server then hash pass and send dat ato db.
     }
-    handleChange() {
-        //setstate see mats code
-        console.log(this.state);
-        ;
-        // axios.post
+    handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
     render() {
@@ -42,13 +41,26 @@ export default class Registration extends React.Component {
                     type="text"
                     placeholder="First Name"
                 />
-                <input onChange={this.handleChange} name="lastname" type="text" placeholder="Last Name" />
-                <input onChange={this.handleChange} name="email" type="text" placeholder="Email" />
-                <input onChange={this.handleChange} name="password" type="text" placeholder="Password" />
+                <input
+                    onChange={this.handleChange}
+                    name="lastname"
+                    type="text"
+                    placeholder="Last Name"
+                />
+                <input
+                    onChange={this.handleChange}
+                    name="email"
+                    type="text"
+                    placeholder="Email"
+                />
+                <input
+                    onChange={this.handleChange}
+                    name="password"
+                    type="text"
+                    placeholder="Password"
+                />
                 <button onClick={this.handleSubmit}> Submit </button>
             </form>
         );
     }
 }
-
-//
