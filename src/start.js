@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import logo from './logo'
+import Welcome from './Welcome'
 
 ReactDOM.render(
-    <HelloWorld />,
+    <Welcome />,
     document.querySelector('main')
 );
 
@@ -11,3 +13,9 @@ function HelloWorld() {
         <div>Hello, World!</div>
     );
 }
+
+
+// entry point for react application
+
+
+;
