@@ -2,15 +2,15 @@ import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+export default class Login extends React.Component {
     constructor() {
         super();
         this.state = {
-            firstname: "",
-            lastname: "",
             email: "",
-            password: ""
+            password: "",
+            error: null
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -18,8 +18,14 @@ export default class Registration extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         console.log("click");
-        axios.post("/welcome", this.state).then(resp => {
-            location.replace("/");
+        axios.post("/login", this.state).then(resp => {
+            if (resp.data.error) {
+                this.setState({
+                    error: resp.data.error
+                });
+            } else {
+                location.replace("/");
+            }
         });
     }
     handleChange(e) {
@@ -31,19 +37,8 @@ export default class Registration extends React.Component {
     render() {
         return (
             <form>
-                <h2> Register </h2>
-                <input
-                    onChange={this.handleChange}
-                    name="firstname"
-                    type="text"
-                    placeholder="First Name"
-                />
-                <input
-                    onChange={this.handleChange}
-                    name="lastname"
-                    type="text"
-                    placeholder="Last Name"
-                />
+                <h2>Log in</h2>
+                {this.state.error}
                 <input
                     onChange={this.handleChange}
                     name="email"
@@ -57,7 +52,7 @@ export default class Registration extends React.Component {
                     placeholder="Password"
                 />
                 <button onClick={this.handleSubmit}> Submit </button>
-                <Link to="/login">Click here to Log in!</Link>
+                <Link to="/">Click here to register!</Link>
             </form>
         );
     }

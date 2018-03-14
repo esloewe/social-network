@@ -5,13 +5,38 @@ const db = spicedPg(
         "postgres:postgres:postgres@localhost:5432/socialnetwork"
 );
 
-exports.getUser = function(first_name, last_name, email, password_hash) {
+exports.insertNewUser = function(first_name, last_name, email, password_hash) {
     return db
         .query(
             `INSERT INTO users_data (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id`,
             [first_name, last_name, email, password_hash]
         )
-        .then(function(results) {
+        .then(results => {
+            return results.rows[0].id;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.loginUser = function(email) {
+    return db
+        .query(`SELECT password_hash FROM users_data WHERE email = $1`, [email])
+        .then(results => {
+            return results.rows[0].password_hash;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.getUserData = function(email) {
+    return db
+        .query(
+            `SELECT first_name, last_name, email, id FROM users_data WHERE email = $1`,
+            [email]
+        )
+        .then(results => {
             return results.rows[0];
         })
         .catch(error => {
