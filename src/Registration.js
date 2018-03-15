@@ -9,7 +9,8 @@ export default class Registration extends React.Component {
             firstname: "",
             lastname: "",
             email: "",
-            password: ""
+            password: "",
+            error: null
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,9 +18,14 @@ export default class Registration extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log("click");
         axios.post("/welcome", this.state).then(resp => {
-            location.replace("/");
+            if (resp.data.error) {
+                this.setState({
+                    error: resp.data.error
+                });
+            } else {
+                location.replace("/");
+            }
         });
     }
     handleChange(e) {
@@ -30,35 +36,39 @@ export default class Registration extends React.Component {
 
     render() {
         return (
-            <form>
-                <h2> Register </h2>
-                <input
-                    onChange={this.handleChange}
-                    name="firstname"
-                    type="text"
-                    placeholder="First Name"
-                />
-                <input
-                    onChange={this.handleChange}
-                    name="lastname"
-                    type="text"
-                    placeholder="Last Name"
-                />
-                <input
-                    onChange={this.handleChange}
-                    name="email"
-                    type="text"
-                    placeholder="Email"
-                />
-                <input
-                    onChange={this.handleChange}
-                    name="password"
-                    type="text"
-                    placeholder="Password"
-                />
-                <button onClick={this.handleSubmit}> Submit </button>
-                <Link to="/login">Click here to Log in!</Link>
-            </form>
+            <div className="containerRegister">
+                <form>
+                    <h2 id="registerTitle"> Register </h2>
+                    {this.state.error}
+                    <input
+                        onChange={this.handleChange}
+                        name="firstname"
+                        type="text"
+                        placeholder="First Name"
+                    />
+                    <input
+                        onChange={this.handleChange}
+                        name="lastname"
+                        type="text"
+                        placeholder="Last Name"
+                    />
+                    <input
+                        onChange={this.handleChange}
+                        name="email"
+                        type="text"
+                        placeholder="Email"
+                    />
+                    <input
+                        onChange={this.handleChange}
+                        name="password"
+                        type="text"
+                        placeholder="Password"
+                    />
+                    <button onClick={this.handleSubmit}> Submit </button>
+
+                    <Link to="/login">Click here to Log in!</Link>
+                </form>
+            </div>
         );
     }
 }

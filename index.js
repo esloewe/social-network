@@ -6,9 +6,38 @@ const cookieSession = require("cookie-session");
 const compression = require("compression");
 const csrf = require("csurf");
 const { hashPassword, checkPassword } = require("./hashPass");
-const { insertNewUser, loginUser, getUserData } = require("./database");
+const {
+    insertNewUser,
+    loginUser,
+    getUserData,
+    uploadProfilePic
+} = require("./database");
+const config = require("./config");
+const path = require("path");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const s3 = require("./s3");
 
 // middleware
+
+var diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
 app.use(express.static("./public"));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -46,7 +75,10 @@ app.post("/welcome", (req, res) => {
         !req.body.email ||
         !req.body.password
     ) {
-        console.log("error");
+        res.json({
+            success: false,
+            error: "Something went wrong. Please try again!"
+        });
     } else {
         let hashPass = hashPassword(req.body.password);
         hashPass.then(hashPass => {
@@ -77,7 +109,7 @@ app.post("/login", (req, res) => {
         console.log("about to run login user", req.body.email);
         loginUser(req.body.email).then(hash => {
             if (hash) {
-                console.log("about to run check pass", hash );
+                console.log("about to run check pass", hash);
                 checkPassword(req.body.password, hash).then(doesMatch => {
                     if (doesMatch) {
                         getUserData(req.body.email).then(
@@ -86,13 +118,13 @@ app.post("/login", (req, res) => {
                                     firstname: dataFromGetUserData.firstname,
                                     lastname: dataFromGetUserData.lastname,
                                     email: dataFromGetUserData.email,
-                                    id: dataFromGetUserData.id
+                                    id: dataFromGetUserData.id,
+                                    image: dataFromGetUserData.file
                                 };
                                 res.json({
                                     success: true
                                 });
                             }
-
                         );
                     }
                 });
@@ -101,8 +133,30 @@ app.post("/login", (req, res) => {
                     success: false,
                     error: "Something went wrong. Please try again!"
                 });
-
             }
+        });
+    } else if (!req.body.email || !req.body.password) {
+        res.json({
+            success: false,
+            error: "Something went wrong. Please try again!"
+        });
+    }
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("inside post upload");
+
+    if (req.file) {
+        uploadProfilePic(req.file.filename, req.session.user.id).then(
+            results => {
+                res.json({
+                    profilePic: config.s3Url + req.file.filename
+                });
+            }
+        );
+    } else {
+        res.json({
+            success: false
         });
     }
 });
@@ -124,6 +178,22 @@ app.get("/", (req, res) => {
         res.sendFile(__dirname + "/index.html");
     }
 });
+
+app.get("/user", (req, res) => {
+    getUserData(req.session.user.email).then(results => {
+        console.log("looking at the session", req.session.user);
+        console.log("user stifff with img ", results);
+        results.profile_pic = config.s3Url + results.profile_pic;
+
+        res.json({
+            firstname: results.first_name,
+            lastname: results.last_name,
+            email: results.email,
+            profilePic: results.profile_pic
+        });
+    });
+});
+
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });

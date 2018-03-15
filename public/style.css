@@ -1,0 +1,88 @@
+/* GENERAL -----------------------------------------------------*/
+
+body {
+    background-image: url("./sea.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+/* welcome ----------------------------------------------------- */
+.welcome {
+}
+
+.logo {
+    font-size: 72px;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+}
+
+/* form generals ----------------------------------------------------- */
+
+form {
+    width: 250px;
+    border: 2px solid black;
+}
+
+input {
+    display: flex;
+    font-size: 18px;
+    margin-bottom: 20px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border-radius: 1px;
+    border: 2px, solid #f5f4f0;
+}
+
+input[type:"placeholder"]:hover {
+    color: #7ba98c;
+}
+
+button {
+    border-radius: 1px;
+    font-size: 22px;
+    margin: 20px;
+    background-color: transparent;
+    color: #f5f4f0;
+    padding: 10px;
+    border: 2px, solid #f5f4f0;
+    cursor: pointer;
+    align-items: center;
+}
+
+button:hover {
+    border: 2px solid rgba(233, 193, 154, 0.5);
+    background: rgba(182, 182, 182, 0.5);
+}
+
+a {
+    color: #f5f4f0;
+    font-size: 16px;
+    text-decoration: none;
+}
+a:hover {
+    font-size: 18px;
+}
+
+/* registration component ----------------------------------------------------- */
+
+.containerRegister {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-top: 100px;
+}
+
+#registerTitle {
+    color: #f5f4f0;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* profile ----------------------------------------------------- */
+
+#profilePic img {
+    width: 100px;
+    height: 100px;
+}

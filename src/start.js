@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Logo from "./Logo";
+import App from "./App";
 import Welcome from "./Welcome";
 
 let elem;
 
 if (location.pathname === "/") {
-    elem = <Logo />;
+    elem = <App />;
 } else if (location.pathname === "/welcome") {
     elem = <Welcome />;
 }

@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function Logo() {
-    return <img src="/logo.png" alt="" />;
+    return (
+        <div>
+            <h1 className="logo"> yoga wanderers</h1>;
+        </div>
+    );
 }

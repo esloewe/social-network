@@ -33,10 +33,24 @@ exports.loginUser = function(email) {
 exports.getUserData = function(email) {
     return db
         .query(
-            `SELECT first_name, last_name, email, id FROM users_data WHERE email = $1`,
+            `SELECT first_name, last_name, email, id, profile_pic FROM users_data WHERE email = $1`,
             [email]
         )
         .then(results => {
+            return results.rows[0];
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.uploadProfilePic = function(profile_pic, id) {
+    return db
+        .query(`UPDATE users_data SET profile_pic = $1 WHERE id = $2`, [
+            profile_pic,
+            id
+        ])
+        .then(function(results) {
             return results.rows[0];
         })
         .catch(error => {
