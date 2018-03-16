@@ -61,7 +61,7 @@ export default class Registration extends React.Component {
                     <input
                         onChange={this.handleChange}
                         name="password"
-                        type="text"
+                        type="password"
                         placeholder="Password"
                     />
                     <button onClick={this.handleSubmit}> Submit </button>

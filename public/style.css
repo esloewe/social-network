@@ -1,10 +1,7 @@
 /* GENERAL -----------------------------------------------------*/
 
 body {
-    background-image: url("./sea.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
+    background-color: #94d9d3
 }
 
 /* welcome ----------------------------------------------------- */
@@ -80,9 +77,33 @@ a:hover {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
-/* profile ----------------------------------------------------- */
+/* profilePicCorner ----------------------------------------------------- */
 
 #profilePic img {
     width: 100px;
     height: 100px;
+
+
+
+}
+
+#profilePic {
+    display: flex;
+    align-content: flex-end;
+
+}
+
+.profilePicCorner {
+
+
+
+
+}
+
+/* Profile ----------------------------------------------------- */
+
+
+.imageInProfile img {
+    width: 350px;
+    height: 350px;
 }

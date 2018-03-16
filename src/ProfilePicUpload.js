@@ -12,8 +12,7 @@ export default function ProfilePicUpload(props) {
         });
     }
     return (
-        <div>
-            <p>X</p>
+        <div className="profilePicCorner">
             <h4>want to change your profile picture?</h4>
             <input type="file" onChange={upload} />
             <button onClick={props.handleSubmit}>Upload</button>

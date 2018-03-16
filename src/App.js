@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "./axios";
 import Logo from "./Logo";
-import { Link } from "react-router-dom";
+import { Link, BrowserRouter, Route } from "react-router-dom";
 import ProfilePicUpload from "./ProfilePicUpload";
+import Profile from "./Profile";
 
 export default class App extends React.Component {
     constructor() {
@@ -11,41 +12,44 @@ export default class App extends React.Component {
             firstname: "",
             lastname: "",
             email: "",
-            profilePic: "./profilePic.png",
+            profilePic: "profilePic.png",
+            bio: "",
             showUploader: false
         };
 
         this.toggleUploader = this.toggleUploader.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setNewImage = this.setNewImage.bind(this);
+        this.setBio = this.setBio.bind(this);
     }
 
     componentDidMount() {
-        console.log("looking at comp did mout");
         axios.get("/user").then(resp => {
             console.log("resp", resp);
             this.setState({
                 firstname: resp.data.firstname,
                 lastname: resp.data.lastname,
                 email: resp.data.email,
-                profilePic: resp.data.profilePic
+                profilePic: resp.data.profilePic || this.state.profilePic,
+                bio: resp.data.bio
             });
         });
     }
 
     toggleUploader() {
-        console.log("this state toogle uploader", this);
         this.setState({ showUploader: !this.state.showUploader });
     }
 
     handleSubmit(e) {
-        console.log("click");
         e.preventDefault();
     }
 
     setNewImage(profilePic) {
-        console.log("running set new image");
         this.setState({ profilePic });
+    }
+
+    setBio(bio) {
+        this.setState({ bio: bio });
     }
 
     render() {
@@ -65,6 +69,25 @@ export default class App extends React.Component {
                         handleSubmit={this.handleSubmit}
                     />
                 )}
+
+                <BrowserRouter>
+                    <div>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Profile
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    email={this.state.email}
+                                    profilePic={this.state.profilePic}
+                                    bio={this.state.bio}
+                                    setBio={this.setBio}
+                                />
+                            )}
+                        />
+                    </div>
+                </BrowserRouter>
             </div>
         );
     }

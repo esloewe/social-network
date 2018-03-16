@@ -10,7 +10,8 @@ const {
     insertNewUser,
     loginUser,
     getUserData,
-    uploadProfilePic
+    uploadProfilePic,
+    updateBio
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -119,7 +120,8 @@ app.post("/login", (req, res) => {
                                     lastname: dataFromGetUserData.lastname,
                                     email: dataFromGetUserData.email,
                                     id: dataFromGetUserData.id,
-                                    image: dataFromGetUserData.file
+                                    image: dataFromGetUserData.file,
+                                    bio: dataFromGetUserData.bio
                                 };
                                 res.json({
                                     success: true
@@ -161,6 +163,23 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+app.post("/bio", (req, res) => {
+    console.log("inside bio route ");
+    if (req.body.bio) {
+        updateBio(req.body.bio, req.session.user.id).then(results => {
+            results.bio = req.session.bio;
+            console.log("results bio ", results);
+            res.json({
+                bio: req.body.bio
+            });
+        });
+    } else {
+        res.json({
+            success: false
+        });
+    }
+});
+
 // gets
 
 app.get("/welcome", (req, res) => {
@@ -181,15 +200,15 @@ app.get("/", (req, res) => {
 
 app.get("/user", (req, res) => {
     getUserData(req.session.user.email).then(results => {
-        console.log("looking at the session", req.session.user);
-        console.log("user stifff with img ", results);
-        results.profile_pic = config.s3Url + results.profile_pic;
+        results.profile_pic =
+            results.profile_pic && config.s3Url + results.profile_pic;
 
         res.json({
             firstname: results.first_name,
             lastname: results.last_name,
             email: results.email,
-            profilePic: results.profile_pic
+            profilePic: results.profile_pic,
+            bio: results.bio
         });
     });
 });

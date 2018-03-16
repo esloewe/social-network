@@ -7,5 +7,6 @@ CREATE TABLE users_data (
     email VARCHAR (200) NOT NULL UNIQUE,
     password_hash VARCHAR (200) NOT NULL,
     profile_pic VARCHAR (300),
+    bio VARCHAR (2000),
     created_at TIMESTAMP DEFAULT current_timestamp
 );
