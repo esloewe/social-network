@@ -213,6 +213,14 @@ app.get("/user", (req, res) => {
     });
 });
 
+app.get("/logout", (req, res) => {
+    req.session = null;
+
+    res.json({
+        success: true
+    });
+});
+
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });

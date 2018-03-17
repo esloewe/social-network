@@ -36,38 +36,49 @@ export default class Registration extends React.Component {
 
     render() {
         return (
-            <div className="containerRegister">
-                <form>
-                    <h2 id="registerTitle"> Register </h2>
-                    {this.state.error}
-                    <input
-                        onChange={this.handleChange}
-                        name="firstname"
-                        type="text"
-                        placeholder="First Name"
-                    />
-                    <input
-                        onChange={this.handleChange}
-                        name="lastname"
-                        type="text"
-                        placeholder="Last Name"
-                    />
-                    <input
-                        onChange={this.handleChange}
-                        name="email"
-                        type="text"
-                        placeholder="Email"
-                    />
-                    <input
-                        onChange={this.handleChange}
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                    />
-                    <button onClick={this.handleSubmit}> Submit </button>
-
-                    <Link to="/login">Click here to Log in!</Link>
-                </form>
+            <div>
+                <span id="introPlattform">
+                    <h2 className="introPlattform">
+                        Meet and join a community of like-minded people. Find
+                        yoga and wellness jobs worldwide. Travel, explore and
+                        give back.
+                    </h2>
+                </span>
+                <div className="containerRegister">
+                    <form>
+                        <h2 id="registerTitle"> Register </h2>
+                        <p className="error">{this.state.error}</p>
+                        <input
+                            onChange={this.handleChange}
+                            name="firstname"
+                            type="text"
+                            placeholder="First Name"
+                        />
+                        <input
+                            onChange={this.handleChange}
+                            name="lastname"
+                            type="text"
+                            placeholder="Last Name"
+                        />
+                        <input
+                            onChange={this.handleChange}
+                            name="email"
+                            type="text"
+                            placeholder="Email"
+                        />
+                        <input
+                            onChange={this.handleChange}
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                        />
+                        <button onClick={this.handleSubmit}> Submit </button>
+                        <div id="or">or</div>
+                        <div id="a">
+                            <Link to="/login">Click here to Log in!</Link>
+                        </div>
+                    </form>
+                </div>
             </div>
         );
     }

@@ -1,25 +1,53 @@
 /* GENERAL -----------------------------------------------------*/
 
 body {
-    background-color: #94d9d3
+    margin: 0;
+    color: #444;
+}
+
+.error {
+    color: #333;
 }
 
 /* welcome ----------------------------------------------------- */
 .welcome {
+    position: absolute;
+    width: 100%;
+    top: 0;
+
+    left: 0;
+    background: url("/sea2.jpg") no-repeat center center fixed;
+    -webkit-background-size: 100% auto;
+    -moz-background-size: 100% auto;
+    -o-background-size: 100% auto;
+    background-size: 100% auto;
 }
 
 .logo {
-    font-size: 72px;
-    text-transform: uppercase;
-    color: white;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(7, 57, 56, 0.7);
+    border-bottom: 2px solid rgba(7, 57, 56, 0.9);
+}
+.logo img {
+    width: 300px;
+    border: none;
+    display: block;
+    margin: 0 auto;
 }
 
 /* form generals ----------------------------------------------------- */
 
 form {
-    width: 250px;
-    border: 2px solid black;
+    border: 2px solid rgba(154, 219, 215, 0.5);
+    box-shadow: 0px 2px 3px rgba(154, 219, 215, 0.2);
+    width: 400px;
+    margin: 10px;
+    color: #7f8c8d;
+    font-size: 120%;
+    border-radius: 10px;
+    background-color: rgba(232, 232, 231, 0.1);
 }
 
 input {
@@ -30,11 +58,17 @@ input {
     text-align: center;
     align-items: center;
     border-radius: 1px;
-    border: 2px, solid #f5f4f0;
+    border: 2px solid #eeeeee;
+    flex: 1;
+    margin-left: 24%;
 }
 
-input[type:"placeholder"]:hover {
-    color: #7ba98c;
+::placeholder {
+    color: #999;
+}
+
+input:hover {
+    border: 2px solid rgb(154, 219, 215);
 }
 
 button {
@@ -50,14 +84,18 @@ button {
 }
 
 button:hover {
-    border: 2px solid rgba(233, 193, 154, 0.5);
+    border: 3px solid #f5f4f0;
     background: rgba(182, 182, 182, 0.5);
 }
 
 a {
-    color: #f5f4f0;
+    color: #eeeeee;
     font-size: 16px;
     text-decoration: none;
+}
+
+#a {
+    margin-bottom: 20px;
 }
 a:hover {
     font-size: 18px;
@@ -68,12 +106,48 @@ a:hover {
 .containerRegister {
     display: flex;
     justify-content: center;
-    align-self: center;
-    margin-top: 100px;
+    text-align: center;
+    margin-top: 60px;
 }
 
 #registerTitle {
-    color: #f5f4f0;
+    color: #eeeeee;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#or {
+    text-align: center;
+    font-size: 16px;
+    color: #eeeeee;
+}
+
+.introPlattform {
+    height: 50px;
+    font-size: 26px;
+    color: #fff;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: lighter;
+    text-align: center;
+    border: 1px solid rgba(7, 57, 56, 0.7);
+    box-shadow: 1px 3px 4px rgba(7, 57, 56, 0.2);
+    margin-top: 0px;
+    padding-top: 10px;
+    padding-botton: 10px;
+    background-color: rgba(7, 57, 56, 0.9);
+    color: #eeeeee;
+}
+
+/* login ----------------------------------------------------- */
+
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 100px;
+}
+
+#loginTitle {
+    color: #eeeeee;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
@@ -82,28 +156,40 @@ a:hover {
 #profilePic img {
     width: 100px;
     height: 100px;
-
-
-
 }
 
 #profilePic {
-    display: flex;
-    align-content: flex-end;
-
+    display: block;
+    text-align: right;
 }
 
 .profilePicCorner {
-
-
-
-
+    max-width: 260px;
+    display: block;
+    float: right;
+    border: 2px solid black;
 }
 
 /* Profile ----------------------------------------------------- */
 
+.profilePage {
+    display: flex;
+}
+
+#titleInProfilePage {
+    flex: 1;
+}
 
 .imageInProfile img {
     width: 350px;
     height: 350px;
+}
+
+#aboutMeClick {
+}
+
+#textareaArea {
+}
+
+#bioInProfile {
 }

@@ -55,7 +55,6 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <Logo />
                 <div id="profilePic">
                     <img
                         onClick={this.toggleUploader}

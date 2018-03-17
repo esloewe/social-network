@@ -21,8 +21,7 @@ export default class Profile extends React.Component {
     }
 
 
-    saveBio(e) {
-        e.preventDefault();
+    saveBio() {
         axios.post("/bio", { bio: this.bio }).then(resp => {
             this.props.setBio(resp.data.bio );
         });
@@ -34,19 +33,21 @@ export default class Profile extends React.Component {
 
     render(props) {
         return (
-            <div>
-                <h2>
-                    {this.props.firstname} {this.props.lastname}
-                </h2>
-                <div className="imageInProfile">
+            <div className="profilePage">
+
+                <span className="imageInProfile">
                     <img src= {this.props.profilePic}/>
-                </div>
-                <a href="" onClick={this.toggleTextarea}>
+                </span>
+                <h2 id="titleInProfile">
+                    {this.props.firstname} {this.props.lastname}
+                </h2 >
+
+                <a id="aboutMeClick" href="" onClick={this.toggleTextarea}>
                     About me:
                 </a>
 
                 {this.state.showTextarea && (
-                    <div>
+                    <div id="textareaArea">
                         <textarea
                             onChange={this.handleChange}
                             rows="4"
@@ -58,7 +59,7 @@ export default class Profile extends React.Component {
                     </div>
 
                 )}
-                {!this.state.showTextarea &&  <p>  {this.props.bio}</p> }
+                {!this.state.showTextarea &&  <p id="bioInProfile">  {this.props.bio}</p> }
             </div>
         )
     }

@@ -36,24 +36,26 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <form>
-                <h2>Log in</h2>
-                {this.state.error}
-                <input
-                    onChange={this.handleChange}
-                    name="email"
-                    type="text"
-                    placeholder="Email"
-                />
-                <input
-                    onChange={this.handleChange}
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                />
-                <button onClick={this.handleSubmit}> Submit </button>
-                <Link to="/">Click here to register!</Link>
-            </form>
+            <div className="loginContainer">
+                <form>
+                    <h2 id="loginTitle">Log in</h2>
+                    <p className="error">{this.state.error}</p>
+                    <input
+                        onChange={this.handleChange}
+                        name="email"
+                        type="text"
+                        placeholder="Email"
+                    />
+                    <input
+                        onChange={this.handleChange}
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                    />
+                    <button onClick={this.handleSubmit}> Submit </button>
+                    <Link to="/">Click here to register!</Link>
+                </form>
+            </div>
         );
     }
 }
