@@ -12,7 +12,9 @@ const {
     getUserData,
     uploadProfilePic,
     updateBio,
-    getOtherUserData
+    getOtherUserData,
+    getFriendshipStatus,
+    sendFriendRequest
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -181,7 +183,9 @@ app.post("/bio", (req, res) => {
     }
 });
 
-// gets
+app.post("/friend-request", (req, res) => {});
+
+// ------------------------------------------------------------------------------- gets
 
 app.get("/welcome", (req, res) => {
     if (req.session.user) {
@@ -218,18 +222,31 @@ app.get("/get-user/:id", (req, res) => {
     const id = req.params.id;
     console.log(req.params.id);
 
-    getOtherUserData(id).then(results => {
-        results.profile_pic =
-            results.profile_pic && config.s3Url + results.profile_pic;
-        console.log("inside params id stuff other user", results);
-        res.json({
-            firstname: results.first_name,
-            lastname: results.last_name,
-            email: results.email,
-            profilePic: results.profile_pic,
-            bio: results.bio
+    if (req.session.user.id == req.params.id) {
+        res.json({ sameProfile: true });
+    } else {
+        Promise.all([
+            getOtherUserData(id),
+            getFriendshipStatus(id, req.session.user.id)
+        ]).then(results => {
+            results[0].profile_pic = config.s3Url + results[0].profile_pic;
+            console.log(
+                "inside params id stuff other user",
+                results[0],
+                results[1]
+            );
+            res.json({
+                firstname: results[0].first_name,
+                lastname: results[0].last_name,
+                email: results[0].email,
+                profilePic: results[0].profile_pic,
+                bio: results[0].bio,
+                senderId: results[1] && results[1].sender_id,
+                friendStatus: results[1] && results[1].status,
+                sameProfile: false
+            });
         });
-    });
+    }
 });
 
 app.get("*", function(req, res) {

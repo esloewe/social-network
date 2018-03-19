@@ -13,12 +13,11 @@ CREATE TABLE users_data (
 );
 
 
-
-    CREATE TABLE friendships (
-        id SERIAL PRIMARY KEY,
-        sender_id INTEGER NOT NULL,
-        recipient_id INTEGER NOT NULL,
-        status INTEGER NOT NULL,
-        created_at TIMESTAMP DEFAULT current_timestamp,
-        updated_at TIMESTAMP DEFAULT current_timestamp
+CREATE TABLE friendships (
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL,
+    recipient_id INTEGER NOT NULL,
+    status INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    updated_at TIMESTAMP DEFAULT current_timestamp
 );

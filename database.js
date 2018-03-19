@@ -8,7 +8,9 @@ const db = spicedPg(
 exports.insertNewUser = function(first_name, last_name, email, password_hash) {
     return db
         .query(
-            `INSERT INTO users_data (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id`,
+            `INSERT INTO users_data (first_name, last_name, email, password_hash)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id`,
             [first_name, last_name, email, password_hash]
         )
         .then(results => {
@@ -21,7 +23,12 @@ exports.insertNewUser = function(first_name, last_name, email, password_hash) {
 
 exports.loginUser = function(email) {
     return db
-        .query(`SELECT password_hash FROM users_data WHERE email = $1`, [email])
+        .query(
+            `SELECT password_hash
+                FROM users_data
+                WHERE email = $1`,
+            [email]
+        )
         .then(results => {
             return results.rows[0].password_hash;
         })
@@ -33,7 +40,9 @@ exports.loginUser = function(email) {
 exports.getUserData = function(email) {
     return db
         .query(
-            `SELECT first_name, last_name, email, id, profile_pic, bio FROM users_data WHERE email = $1`,
+            `SELECT first_name, last_name, email, id, profile_pic, bio
+            FROM users_data
+            WHERE email = $1`,
             [email]
         )
         .then(results => {
@@ -46,10 +55,12 @@ exports.getUserData = function(email) {
 
 exports.uploadProfilePic = function(profile_pic, id) {
     return db
-        .query(`UPDATE users_data SET profile_pic = $1 WHERE id = $2`, [
-            profile_pic,
-            id
-        ])
+        .query(
+            `UPDATE users_data
+            SET profile_pic = $1
+            WHERE id = $2`,
+            [profile_pic, id]
+        )
         .then(results => {
             return results.rows[0];
         })
@@ -59,12 +70,60 @@ exports.uploadProfilePic = function(profile_pic, id) {
 };
 
 exports.updateBio = function(bio, id) {
-    return db.query(`UPDATE users_data SET bio = $1 WHERE id = $2`, [bio, id]);
+    return db.query(
+        `UPDATE users_data
+        SET bio = $1
+        WHERE id = $2`,
+        [bio, id]
+    );
 };
 
 exports.getOtherUserData = function(id) {
     return db
-        .query(`SELECT * FROM users_data WHERE id = $1`, [id])
+        .query(
+            `SELECT *
+            FROM users_data
+            WHERE id = $1`,
+            [id]
+        )
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.getFriendshipStatus = function(recipient_id, sender_id) {
+    return db
+        .query(
+            `SELECT * FROM friendships
+            WHERE (recipient_id = $1 OR sender_id = $1)
+            AND (recipient_id = $2 OR sender_id = $2)
+            AND (status = 1 OR status = 2)`,
+            [recipient_id, sender_id]
+        )
+        .then(results => {
+            console.log("result rows friendshipss ", results.rows);
+            if (!results.rows[0]) {
+                return (status = 0);
+            } else {
+                return results.rows[0];
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.sendFriendRequest = function(sender_id, recipient_id, status) {
+    return db
+        .query(
+            `INSERT INTO friendship (sender_id, recipient_id, status)
+            VALUES ($1, $2, $3)
+            `,
+            [sender_id, recipient_id, status]
+        )
         .then(results => {
             return results.rows[0];
         })

@@ -227,3 +227,7 @@ a:hover {
     padding: 25px;
     border: 2px solid #9a9a9a;
 }
+
+.dynamicButton {
+    color: #585858;
+}
