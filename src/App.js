@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import { Link, BrowserRouter, Route } from "react-router-dom";
 import ProfilePicUpload from "./ProfilePicUpload";
 import Profile from "./Profile";
+import OtherProfiles from "./OtherProfiles";
 
 export default class App extends React.Component {
     constructor() {
@@ -12,7 +13,7 @@ export default class App extends React.Component {
             firstname: "",
             lastname: "",
             email: "",
-            profilePic: "profilePic.png",
+            profilePic: "/media/SVG/defaultimg.svg",
             bio: "",
             showUploader: false
         };
@@ -85,6 +86,7 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
+                        <Route path="/user/:id" component={OtherProfiles} />
                     </div>
                 </BrowserRouter>
             </div>

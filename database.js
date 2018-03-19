@@ -61,3 +61,14 @@ exports.uploadProfilePic = function(profile_pic, id) {
 exports.updateBio = function(bio, id) {
     return db.query(`UPDATE users_data SET bio = $1 WHERE id = $2`, [bio, id]);
 };
+
+exports.getOtherUserData = function(id) {
+    return db
+        .query(`SELECT * FROM users_data WHERE id = $1`, [id])
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};

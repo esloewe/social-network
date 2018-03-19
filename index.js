@@ -11,7 +11,8 @@ const {
     loginUser,
     getUserData,
     uploadProfilePic,
-    updateBio
+    updateBio,
+    getOtherUserData
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -213,11 +214,21 @@ app.get("/user", (req, res) => {
     });
 });
 
-app.get("/logout", (req, res) => {
-    req.session = null;
+app.get("/get-user/:id", (req, res) => {
+    const id = req.params.id;
+    console.log(req.params.id);
 
-    res.json({
-        success: true
+    getOtherUserData(id).then(results => {
+        results.profile_pic =
+            results.profile_pic && config.s3Url + results.profile_pic;
+        console.log("inside params id stuff other user", results);
+        res.json({
+            firstname: results.first_name,
+            lastname: results.last_name,
+            email: results.email,
+            profilePic: results.profile_pic,
+            bio: results.bio
+        });
     });
 });
 
