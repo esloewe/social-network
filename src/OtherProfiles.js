@@ -11,17 +11,14 @@ export default class OtherProfiles extends React.Component {
             lastname: "",
             email: "",
             profilePic: "",
-            bio: ""
+            bio: "",
+            friendStatus: ""
         };
+        this.setFriendshipStatus = this.setFriendshipStatus.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.props.match.params.id);
-
         axios.get(`/get-user/${this.props.match.params.id}`).then(resp => {
-            console.log("true stuff", resp.data.sameProfile == true);
-
-            console.log("other profile respt ", resp);
             if (resp.data.sameProfile == true) {
                 return this.props.history.push("/");
             } else {
@@ -39,6 +36,10 @@ export default class OtherProfiles extends React.Component {
         });
     }
 
+    setFriendshipStatus(status) {
+        this.setState({ friendStatus: status });
+    }
+
     render() {
         return (
             <div className="othersProfilePage">
@@ -53,6 +54,8 @@ export default class OtherProfiles extends React.Component {
                 <FriendButton
                     friendStatus={this.state.friendStatus}
                     senderId={this.state.senderId}
+                    setFriendshipStatus={this.setFriendshipStatus}
+                    match={this.props.match}
                 />
             </div>
         );

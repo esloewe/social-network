@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "./axios";
 
 export default class FriendButton extends React.Component {
     constructor(props) {
@@ -9,25 +10,61 @@ export default class FriendButton extends React.Component {
     }
 
     handleSubmit(e) {
-        console.log("clickcc");
         e.preventDefault();
+        console.log("click", this.props);
 
-        axios.post("/friend-request");
+        if (this.props.friendStatus == 0) {
+            axios
+                .post(`/send-friend-request/${this.props.match.params.id}`)
+                .then(resp => {
+                    this.props.setFriendshipStatus(resp.data.status);
+                });
+        } else if (this.props.friendStatus == 1) {
+            if (this.props.match.params.id == this.props.senderId) {
+                console.log("ACCEPTING");
+                axios
+                    .post(
+                        `/accept-friend-request/${this.props.match.params.id}`
+                    )
+                    .then(resp => {
+                        this.props.setFriendshipStatus(resp.data.status);
+                    });
+            } else {
+                console.log("CANCELLING");
+
+                axios
+                    .post(
+                        `/cancel-friend-request/${this.props.match.params.id}`
+                    )
+                    .then(resp => {
+                        this.props.setFriendshipStatus(resp.data.status);
+                    });
+            }
+        } else if (this.props.friendStatus == 2) {
+            axios.post(`/unfriend/${this.props.match.params.id}`).then(resp => {
+                this.props.setFriendshipStatus(resp.data.status);
+            });
+        } else if (this.props.friendStatus == 5) {
+            axios
+                .post(`/send-friend-request/${this.props.match.params.id}`)
+                .then(resp => {
+                    this.props.setFriendshipStatus(resp.data.status);
+                });
+        }
     }
 
     renderButton() {
         let text;
         if (this.props.friendStatus == 1) {
             text = "Pending Request";
+            if (this.props.match.params.id == this.props.senderId) {
+                text = "Accept Friend Request";
+            } else {
+                text = "Cancel Friend Request";
+            }
         } else if (this.props.friendStatus == 2) {
-            text = "Friends";
-        } else if (this.props.friendStatus == 3) {
-            text = "Friendship not accepted";
-        } else if (this.props.friendStatus == 4) {
             text = "Unfriend";
-        } else if (this.props.friendStatus == 5) {
-            text = "Cancel friend request";
-        } else if (this.props.friendStatus == 0) {
+        } else {
             text = "Send Friend Request";
         }
         return (

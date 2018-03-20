@@ -14,7 +14,8 @@ const {
     updateBio,
     getOtherUserData,
     getFriendshipStatus,
-    sendFriendRequest
+    sendFriendRequest,
+    updateFriendRequest
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -149,8 +150,6 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    console.log("inside post upload");
-
     if (req.file) {
         uploadProfilePic(req.file.filename, req.session.user.id).then(
             results => {
@@ -167,11 +166,10 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/bio", (req, res) => {
-    console.log("inside bio route ");
     if (req.body.bio) {
         updateBio(req.body.bio, req.session.user.id).then(results => {
             results.bio = req.session.bio;
-            console.log("results bio ", results);
+
             res.json({
                 bio: req.body.bio
             });
@@ -183,7 +181,57 @@ app.post("/bio", (req, res) => {
     }
 });
 
-app.post("/friend-request", (req, res) => {});
+app.post("/send-friend-request/:id", (req, res) => {
+    let status = 1;
+
+    sendFriendRequest(req.session.user.id, req.params.id, status).then(() => {
+        res.json({
+            status: status
+        });
+    });
+});
+
+app.post("/accept-friend-request/:id", (req, res) => {
+    let status = 2;
+
+    updateFriendRequest(req.session.user.id, req.params.id, status).then(
+        results => {
+            res.json({
+                status: status,
+                senderId: results.sender_id,
+                recipientId: results.recipient_id
+            });
+        }
+    );
+});
+
+app.post("/unfriend/:id", (req, res) => {
+    let status = 4;
+
+    updateFriendRequest(req.session.user.id, req.params.id, status).then(
+        results => {
+            res.json({
+                status: status,
+                senderId: results.sender_id,
+                recipientId: results.recipient_id
+            });
+        }
+    );
+});
+
+app.post("/cancel-friend-request/:id", (req, res) => {
+    let status = 5;
+
+    updateFriendRequest(req.session.user.id, req.params.id, status).then(
+        results => {
+            res.json({
+                status: status,
+                senderId: results.sender_id,
+                recipientId: results.recipient_id
+            });
+        }
+    );
+});
 
 // ------------------------------------------------------------------------------- gets
 
@@ -220,7 +268,6 @@ app.get("/user", (req, res) => {
 
 app.get("/get-user/:id", (req, res) => {
     const id = req.params.id;
-    console.log(req.params.id);
 
     if (req.session.user.id == req.params.id) {
         res.json({ sameProfile: true });
@@ -230,18 +277,15 @@ app.get("/get-user/:id", (req, res) => {
             getFriendshipStatus(id, req.session.user.id)
         ]).then(results => {
             results[0].profile_pic = config.s3Url + results[0].profile_pic;
-            console.log(
-                "inside params id stuff other user",
-                results[0],
-                results[1]
-            );
+
             res.json({
                 firstname: results[0].first_name,
                 lastname: results[0].last_name,
                 email: results[0].email,
                 profilePic: results[0].profile_pic,
                 bio: results[0].bio,
-                senderId: results[1] && results[1].sender_id,
+                senderId: results[1] && results[1].senderId,
+                recipientId: results[1] && results[1].recipientId,
                 friendStatus: results[1] && results[1].status,
                 sameProfile: false
             });

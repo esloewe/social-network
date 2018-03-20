@@ -104,13 +104,23 @@ exports.getFriendshipStatus = function(recipient_id, sender_id) {
             [recipient_id, sender_id]
         )
         .then(results => {
-            console.log("result rows friendshipss ", results.rows);
+            let status;
+            console.log("result rows friendshipss ", results.rows[0]);
             if (!results.rows[0]) {
-                return (status = 0);
+                status = 0;
             } else {
-                return results.rows[0];
+                status = results.rows[0].status;
             }
+            console.log("statussss set  ", status);
+            return {
+                status,
+                senderId:
+                    (results.rows[0] && results.rows[0].sender_id) || null,
+                recipientId:
+                    (results.rows[0] && results.rows[0].recipient_id) || null
+            };
         })
+
         .catch(error => {
             console.log(error);
         });
@@ -119,10 +129,28 @@ exports.getFriendshipStatus = function(recipient_id, sender_id) {
 exports.sendFriendRequest = function(sender_id, recipient_id, status) {
     return db
         .query(
-            `INSERT INTO friendship (sender_id, recipient_id, status)
+            `INSERT INTO friendships (sender_id, recipient_id, status)
             VALUES ($1, $2, $3)
             `,
             [sender_id, recipient_id, status]
+        )
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.updateFriendRequest = function(sender_id, recipient_id, status) {
+    return db
+        .query(
+            `UPDATE friendships
+            SET status = $1
+            WHERE (recipient_id = $2 OR sender_id = $2)
+            AND (recipient_id = $3 OR sender_id = $3)
+            RETURNING *`,
+            [status, recipient_id, sender_id]
         )
         .then(results => {
             return results.rows[0];

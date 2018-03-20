@@ -26,7 +26,6 @@ export default class App extends React.Component {
 
     componentDidMount() {
         axios.get("/user").then(resp => {
-            console.log("resp", resp);
             this.setState({
                 firstname: resp.data.firstname,
                 lastname: resp.data.lastname,
