@@ -4,14 +4,12 @@ import axios from "./axios";
 export default class FriendButton extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderButton = this.renderButton.bind(this);
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log("click", this.props);
 
         if (this.props.friendStatus == 0) {
             axios
@@ -21,7 +19,6 @@ export default class FriendButton extends React.Component {
                 });
         } else if (this.props.friendStatus == 1) {
             if (this.props.match.params.id == this.props.senderId) {
-                console.log("ACCEPTING");
                 axios
                     .post(
                         `/accept-friend-request/${this.props.match.params.id}`
@@ -30,8 +27,6 @@ export default class FriendButton extends React.Component {
                         this.props.setFriendshipStatus(resp.data.status);
                     });
             } else {
-                console.log("CANCELLING");
-
                 axios
                     .post(
                         `/cancel-friend-request/${this.props.match.params.id}`
@@ -75,7 +70,6 @@ export default class FriendButton extends React.Component {
     }
 
     render() {
-        console.log("rendering friend button", this.props);
         return this.renderButton();
     }
 }

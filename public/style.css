@@ -3,6 +3,7 @@
 body {
     margin: 0;
     color: #444;
+    font-family: "Open Sans", sans-serif;
 }
 
 .error {
@@ -165,16 +166,16 @@ a:hover {
 /* profilePicCorner ----------------------------------------------------- */
 
 #profilePic img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     padding: 25px;
-    border: 2px solid #9a9a9a;
+    margin: 5px;
 }
 
 #profilePic {
     display: block;
     text-align: right;
-    border: 2px solid #9a9a9a;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .profilePicCorner {
@@ -184,18 +185,39 @@ a:hover {
     border: 2px solid black;
 }
 
+.logoSmallheader {
+    padding: 10px;
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
 /* Profile ----------------------------------------------------- */
 
 .profilePage {
     display: grid;
-    grid-template-columns: 50% 50%;
-    border: 2px solid #9a9a9a;
+    grid-template-columns: 15% 20% 65%;
+    height: 100vh;
+}
+
+@media screen and (max-width: 700px) {
+    .profilePage {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        height: 100vh;
+    }
 }
 
 #titleInProfile {
+    margin-left: 20px;
     font-size: 32px;
 }
 
+.imageInProfile {
+    margin-top: 30px;
+    margin-left: 20px;
+    width: 350px;
+}
 .imageInProfile img {
     border: 2px solid #9a9a9a;
     width: 350px;
@@ -203,19 +225,51 @@ a:hover {
 }
 
 #aboutMeClick {
-    border: 2px solid #9a9a9a;
+    margin-left: 20px;
+    font-size: 20px;
     color: #333;
+}
+#aboutMeClick:hover {
+    color: #b4e0e3;
 }
 
 #textareaArea {
-    border: 2px solid #9a9a9a;
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+#textareaArea ::placeholder {
+    font-size: 18px;
 }
 
 #bioInProfile {
-    font-size: 14px;
-    border: 2px solid #9a9a9a;
+    margin-left: 20px;
+    font-size: 18px;
 }
 
+#buttonProfile {
+    color: #333;
+    border-color: #afeaec;
+}
+
+.sideNav {
+    background-color: #afeaec;
+    /* grid-column: 3;
+    grid-row: 1 / 1; */
+}
+
+#linksSideNav {
+    display: grid;
+    font-size: 26px;
+    margin-top: 20px;
+    color: #333;
+    text-decoration: none;
+    justify-items: center;
+}
+
+#linksSideNav:hover {
+    color: #fbfbfb;
+}
 /* OtherProfile -----------------------------------------------------*/
 
 .othersProfilePage {
@@ -230,4 +284,15 @@ a:hover {
 
 .dynamicButton {
     color: #585858;
+}
+
+/* friendslist page ------------------------------------------------------------------------------- */
+
+.friendsList {
+    margin-left: 50px;
+    display: flex;
+    justify-content: space-around;
+
+    width: 250px;
+    height: 250px;
 }

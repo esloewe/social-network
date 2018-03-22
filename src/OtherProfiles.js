@@ -10,7 +10,7 @@ export default class OtherProfiles extends React.Component {
             firstname: "",
             lastname: "",
             email: "",
-            profilePic: "",
+            profilePic: "/media/SVG/defaultimg.svg",
             bio: "",
             friendStatus: ""
         };
@@ -27,7 +27,7 @@ export default class OtherProfiles extends React.Component {
                     firstname: resp.data.firstname,
                     lastname: resp.data.lastname,
                     email: resp.data.email,
-                    profilePic: resp.data.profilePic,
+                    profilePic: resp.data.profilePic || this.state.profilePic,
                     bio: resp.data.bio,
                     senderId: resp.data.senderId,
                     friendStatus: resp.data.friendStatus

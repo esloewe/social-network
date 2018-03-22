@@ -87,6 +87,7 @@ exports.getOtherUserData = function(id) {
             [id]
         )
         .then(results => {
+            console.log("result for get other user data", results.rows);
             return results.rows[0];
         })
         .catch(error => {
@@ -154,6 +155,25 @@ exports.updateFriendRequest = function(sender_id, recipient_id, status) {
         )
         .then(results => {
             return results.rows[0];
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.friendReqsAndFriendsList = function(id) {
+    return db
+        .query(
+            `SELECT users_data.id, users_data.first_name, users_data.last_name, users_data.profile_pic, friendships.status
+    FROM friendships
+    JOIN users_data
+    ON (status = 1 AND recipient_id = $1 AND sender_id = users_data.id)
+    OR (status = 2 AND recipient_id = $1 AND sender_id = users_data.id)
+    OR (status = 2 AND sender_id = $1 AND recipient_id = users_data.id)`,
+            [id]
+        )
+        .then(results => {
+            return results.rows;
         })
         .catch(error => {
             console.log(error);

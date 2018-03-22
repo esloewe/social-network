@@ -15,7 +15,8 @@ const {
     getOtherUserData,
     getFriendshipStatus,
     sendFriendRequest,
-    updateFriendRequest
+    updateFriendRequest,
+    friendReqsAndFriendsList
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -99,7 +100,6 @@ app.post("/welcome", (req, res) => {
                     email: req.body.email,
                     id
                 };
-                console.log("after req session", req.session.user);
 
                 res.json({
                     success: true
@@ -111,10 +111,8 @@ app.post("/welcome", (req, res) => {
 
 app.post("/login", (req, res) => {
     if (req.body.email && req.body.password) {
-        console.log("about to run login user", req.body.email);
         loginUser(req.body.email).then(hash => {
             if (hash) {
-                console.log("about to run check pass", hash);
                 checkPassword(req.body.password, hash).then(doesMatch => {
                     if (doesMatch) {
                         getUserData(req.body.email).then(
@@ -151,13 +149,11 @@ app.post("/login", (req, res) => {
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
-        uploadProfilePic(req.file.filename, req.session.user.id).then(
-            results => {
-                res.json({
-                    profilePic: config.s3Url + req.file.filename
-                });
-            }
-        );
+        uploadProfilePic(req.file.filename, req.session.user.id).then(() => {
+            res.json({
+                profilePic: config.s3Url + req.file.filename
+            });
+        });
     } else {
         res.json({
             success: false
@@ -186,7 +182,7 @@ app.post("/send-friend-request/:id", (req, res) => {
 
     sendFriendRequest(req.session.user.id, req.params.id, status).then(() => {
         res.json({
-            status: status
+            status
         });
     });
 });
@@ -197,7 +193,7 @@ app.post("/accept-friend-request/:id", (req, res) => {
     updateFriendRequest(req.session.user.id, req.params.id, status).then(
         results => {
             res.json({
-                status: status,
+                status,
                 senderId: results.sender_id,
                 recipientId: results.recipient_id
             });
@@ -211,7 +207,7 @@ app.post("/unfriend/:id", (req, res) => {
     updateFriendRequest(req.session.user.id, req.params.id, status).then(
         results => {
             res.json({
-                status: status,
+                status,
                 senderId: results.sender_id,
                 recipientId: results.recipient_id
             });
@@ -225,7 +221,7 @@ app.post("/cancel-friend-request/:id", (req, res) => {
     updateFriendRequest(req.session.user.id, req.params.id, status).then(
         results => {
             res.json({
-                status: status,
+                status,
                 senderId: results.sender_id,
                 recipientId: results.recipient_id
             });
@@ -276,7 +272,10 @@ app.get("/get-user/:id", (req, res) => {
             getOtherUserData(id),
             getFriendshipStatus(id, req.session.user.id)
         ]).then(results => {
-            results[0].profile_pic = config.s3Url + results[0].profile_pic;
+            console.log("trying image", results[0]);
+            if (results[0].profile_pic) {
+                results[0].profile_pic = config.s3Url + results[0].profile_pic;
+            }
 
             res.json({
                 firstname: results[0].first_name,
@@ -291,6 +290,18 @@ app.get("/get-user/:id", (req, res) => {
             });
         });
     }
+});
+
+app.get("/friends-and-pending-friends", (req, res) => {
+    friendReqsAndFriendsList(req.session.user.id).then(results => {
+        if (results.profile_pic) {
+            results.profile_pic = config.s3Url + results.profile_pic;
+        }
+
+        res.json({
+            results
+        });
+    });
 });
 
 app.get("*", function(req, res) {

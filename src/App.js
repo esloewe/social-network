@@ -5,6 +5,7 @@ import { Link, BrowserRouter, Route } from "react-router-dom";
 import ProfilePicUpload from "./ProfilePicUpload";
 import Profile from "./Profile";
 import OtherProfiles from "./OtherProfiles";
+import Friends from "./Friends";
 
 export default class App extends React.Component {
     constructor() {
@@ -49,13 +50,18 @@ export default class App extends React.Component {
     }
 
     setBio(bio) {
-        this.setState({ bio: bio });
+        this.setState({ bio });
     }
 
     render() {
         return (
             <div>
                 <div id="profilePic">
+                    <img
+                        className="logoSmallheader"
+                        src="/media/SVG/logo-black.svg"
+                    />
+
                     <img
                         onClick={this.toggleUploader}
                         src={this.state.profilePic}
@@ -86,6 +92,7 @@ export default class App extends React.Component {
                             )}
                         />
                         <Route path="/user/:id" component={OtherProfiles} />
+                        <Route path="/friends" component={Friends} />
                     </div>
                 </BrowserRouter>
             </div>
