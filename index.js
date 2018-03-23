@@ -16,13 +16,17 @@ const {
     getFriendshipStatus,
     sendFriendRequest,
     updateFriendRequest,
-    friendReqsAndFriendsList
+    friendReqsAndFriendsList,
+    jobs
 } = require("./database");
 const config = require("./config");
 const path = require("path");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const s3 = require("./s3");
+//socket.io
+//const server = require('http').Server(app);
+//const io = require('socket.io')(server, { origins: 'localhost:8080' });
 
 // middleware
 
@@ -272,7 +276,6 @@ app.get("/get-user/:id", (req, res) => {
             getOtherUserData(id),
             getFriendshipStatus(id, req.session.user.id)
         ]).then(results => {
-            console.log("trying image", results[0]);
             if (results[0].profile_pic) {
                 results[0].profile_pic = config.s3Url + results[0].profile_pic;
             }
@@ -294,14 +297,34 @@ app.get("/get-user/:id", (req, res) => {
 
 app.get("/friends-and-pending-friends", (req, res) => {
     friendReqsAndFriendsList(req.session.user.id).then(results => {
-        if (results.profile_pic) {
-            results.profile_pic = config.s3Url + results.profile_pic;
-        }
+        results.forEach(function(result) {
+            if (result.profile_pic != null) {
+                result.profile_pic = config.s3Url + result.profile_pic;
+            }
+        });
+
+        // for (var i = 0; i < results.length; i++) {
+        //     if (results.profile_pic != null) {
+        //         results.profile_pic = config.s3Url + results.profile_pic;
+        //     }
+        // }
 
         res.json({
             results
         });
     });
+});
+app.get("/jobs.json", (req, res) => {
+    jobs().then(results => {
+        console.log("jobs results ", results);
+        res.json({
+            results
+        });
+    });
+});
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/welcome");
 });
 
 app.get("*", function(req, res) {
@@ -309,5 +332,6 @@ app.get("*", function(req, res) {
 });
 
 app.listen(8080, function() {
+    // change the word app to server
     console.log("I'm listening.");
 });

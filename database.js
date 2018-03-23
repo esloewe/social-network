@@ -179,3 +179,14 @@ exports.friendReqsAndFriendsList = function(id) {
             console.log(error);
         });
 };
+
+exports.jobs = function() {
+    return db
+        .query(`SELECT * FROM jobs`)
+        .then(results => {
+            return results.rows;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};

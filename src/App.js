@@ -5,6 +5,7 @@ import { Link, BrowserRouter, Route } from "react-router-dom";
 import ProfilePicUpload from "./ProfilePicUpload";
 import Profile from "./Profile";
 import OtherProfiles from "./OtherProfiles";
+import JobBoard from "./JobBoard";
 import Friends from "./Friends";
 
 export default class App extends React.Component {
@@ -55,27 +56,29 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <div id="profilePic">
-                    <img
-                        className="logoSmallheader"
-                        src="/media/SVG/logo-black.svg"
-                    />
+            <BrowserRouter>
+                <div>
+                    <div id="profilePic">
+                        <Link to="/">
+                            <img
+                                className="logoSmallheader"
+                                src="/media/SVG/logo-black.svg"
+                            />
+                        </Link>
 
-                    <img
-                        onClick={this.toggleUploader}
-                        src={this.state.profilePic}
-                        alt=""
-                    />
-                </div>
-                {this.state.showUploader && (
-                    <ProfilePicUpload
-                        setNewImage={this.setNewImage}
-                        handleSubmit={this.handleSubmit}
-                    />
-                )}
+                        <img
+                            onClick={this.toggleUploader}
+                            src={this.state.profilePic}
+                            alt=""
+                        />
+                    </div>
+                    {this.state.showUploader && (
+                        <ProfilePicUpload
+                            setNewImage={this.setNewImage}
+                            handleSubmit={this.handleSubmit}
+                        />
+                    )}
 
-                <BrowserRouter>
                     <div>
                         <Route
                             exact
@@ -93,9 +96,10 @@ export default class App extends React.Component {
                         />
                         <Route path="/user/:id" component={OtherProfiles} />
                         <Route path="/friends" component={Friends} />
+                        <Route path="/jobs" component={JobBoard} />
                     </div>
-                </BrowserRouter>
-            </div>
+                </div>
+            </BrowserRouter>
         );
     }
 }

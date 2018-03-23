@@ -27,9 +27,10 @@ class Friends extends React.Component {
             }
             return (
                 <div key={friend.id}>
-                    <img src={image} />
                     {friend.first_name}, {friend.last_name}
+                    <img src={image} />
                     <button
+                        id="buttonInFriends"
                         onClick={() =>
                             this.props.dispatch(endFriendship(friend.id))
                         }
@@ -52,9 +53,10 @@ class Friends extends React.Component {
             }
             return (
                 <div key={friend.id}>
-                    <img src={image} />
                     {friend.first_name}, {friend.last_name}
+                    <img src={image} />
                     <button
+                        id="buttonInFriends"
                         onClick={() =>
                             this.props.dispatch(makeFriend(friend.id))
                         }
@@ -69,14 +71,14 @@ class Friends extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    <h3>Pending Friend Request</h3>
+                <div className="allFriendslist">
+                    <h3 id="titleInFriends">Pending Friend Request</h3>
                     <div className="friendsList">
                         {this.renderPendingFriends()}
                     </div>
                 </div>
-                <div>
-                    <h3>Your friends</h3>
+                <div className="allFriendslist">
+                    <h3 id="titleInFriends">Your friends</h3>
                     <div className="friendsList">{this.renderFriends()}</div>
                 </div>
             </div>

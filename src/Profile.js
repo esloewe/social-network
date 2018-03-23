@@ -33,12 +33,18 @@ export default class Profile extends React.Component {
         return (
             <div className="profilePage">
                 <div className="sideNav">
-                    <Link id="linksSideNav" to="/friends">
-                        Friends
-                    </Link>
                     <Link id="linksSideNav" to="/">
                         My Profile
                     </Link>
+                    <Link id="linksSideNav" to="/friends">
+                        Friends
+                    </Link>
+                    <Link id="linksSideNav" to="/jobs">
+                        Job Board
+                    </Link>
+                    <a id="linksSideNav" href="/logout">
+                        Log out
+                    </a>
                 </div>
                 <div className="imageInProfile">
                     <img src={this.props.profilePic} />
