@@ -43,5 +43,31 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type == "ONLINE_USERS") {
+        console.log("inside reducers ONLINE_USERS", action.users);
+        return {
+            ...state,
+            users: action.users
+        };
+    }
+
+    if (action.type == "USER_JOINED") {
+        console.log("inside reducers USER_JOINED", state.users);
+        return {
+            ...state,
+            users: [...state.users, action.user]
+        };
+    }
+
+    if (action.type == "USER_LEFT") {
+        console.log("inside reducers USER_LEFT", state.users);
+        const newUsers = state.users.filter(user => user.id != action.userId);
+        console.log("new userrss", newUsers);
+        return {
+            ...state,
+            users: newUsers
+        };
+    }
+
     return state;
 }

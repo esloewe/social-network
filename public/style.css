@@ -338,3 +338,18 @@ a:hover {
 .jobBoard p {
     font-size: 18px;
 }
+
+/* online -------------------------------------------------*/
+
+.onlineUsers {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, 250px);
+    padding: 10px;
+    text-align: center;
+}
+
+#imageInOnline {
+    height: 250px;
+    width: 250px;
+}

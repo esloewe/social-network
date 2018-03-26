@@ -165,11 +165,11 @@ exports.friendReqsAndFriendsList = function(id) {
     return db
         .query(
             `SELECT users_data.id, users_data.first_name, users_data.last_name, users_data.profile_pic, friendships.status
-    FROM friendships
-    JOIN users_data
-    ON (status = 1 AND recipient_id = $1 AND sender_id = users_data.id)
-    OR (status = 2 AND recipient_id = $1 AND sender_id = users_data.id)
-    OR (status = 2 AND sender_id = $1 AND recipient_id = users_data.id)`,
+                FROM friendships
+                JOIN users_data
+                ON (status = 1 AND recipient_id = $1 AND sender_id = users_data.id)
+                OR (status = 2 AND recipient_id = $1 AND sender_id = users_data.id)
+                OR (status = 2 AND sender_id = $1 AND recipient_id = users_data.id)`,
             [id]
         )
         .then(results => {
@@ -183,6 +183,22 @@ exports.friendReqsAndFriendsList = function(id) {
 exports.jobs = function() {
     return db
         .query(`SELECT * FROM jobs`)
+        .then(results => {
+            return results.rows;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+exports.getUserByIdChat = function(id) {
+    return db
+        .query(
+            `SELECT first_name, last_name, profile_pic, id
+                FROM users_data
+                WHERE id = ANY($1)`,
+            [id]
+        )
         .then(results => {
             return results.rows;
         })

@@ -39,6 +39,9 @@ export default class Profile extends React.Component {
                     <Link id="linksSideNav" to="/friends">
                         Friends
                     </Link>
+                    <Link id="linksSideNav" to="/online">
+                        Online Friends
+                    </Link>
                     <Link id="linksSideNav" to="/jobs">
                         Job Board
                     </Link>

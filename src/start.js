@@ -12,9 +12,12 @@ const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(reduxPromise))
 );
-
 // socket.io
-// import * as io from 'socket.io-client';
+import * as io from "socket.io-client";
+import initSocket from "./socket";
+initSocket();
+
+// ---------------------------------------//
 
 let elem;
 
@@ -29,3 +32,6 @@ if (location.pathname === "/welcome") {
 }
 
 ReactDOM.render(elem, document.querySelector("main"));
+
+// ---------------------------------------//
+export { store };

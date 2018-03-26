@@ -17,7 +17,8 @@ const {
     sendFriendRequest,
     updateFriendRequest,
     friendReqsAndFriendsList,
-    jobs
+    jobs,
+    getUserByIdChat
 } = require("./database");
 const config = require("./config");
 const path = require("path");
@@ -25,8 +26,8 @@ const multer = require("multer");
 const uidSafe = require("uid-safe");
 const s3 = require("./s3");
 //socket.io
-//const server = require('http').Server(app);
-//const io = require('socket.io')(server, { origins: 'localhost:8080' });
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 
 // middleware
 
@@ -53,12 +54,15 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(
-    cookieSession({
-        secret: process.env.SECRET || require("./secrets.json").secret,
-        maxAge: 1000 * 60 * 60 * 24 * 14
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: process.env.SECRET || require("./secrets.json").secret,
+    maxAge: 1000 * 60 * 60 * 24 * 14
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(csrf());
 app.use(function(req, res, next) {
@@ -303,12 +307,6 @@ app.get("/friends-and-pending-friends", (req, res) => {
             }
         });
 
-        // for (var i = 0; i < results.length; i++) {
-        //     if (results.profile_pic != null) {
-        //         results.profile_pic = config.s3Url + results.profile_pic;
-        //     }
-        // }
-
         res.json({
             results
         });
@@ -331,7 +329,69 @@ app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.listen(8080, function() {
-    // change the word app to server
+server.listen(8080, function() {
     console.log("I'm listening.");
+});
+
+//CHAT ----------------------------------------------------------------------------------//
+
+let onlineUsers = [];
+
+io.on("connection", function(socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+    //onlineUsers
+    //connected
+    if (!socket.request.session || !socket.request.session.user) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.user.id;
+    onlineUsers.push({
+        userId,
+        socketId: socket.id
+    });
+
+    const alreadyInList =
+        onlineUsers.filter(function(user) {
+            return user.userId == userId;
+        }).length > 1;
+
+    if (!alreadyInList) {
+        getUserByIdChat([userId]).then(user => {
+            socket.broadcast.emit("userJoined", user.pop());
+        });
+    }
+
+    getUserByIdChat(onlineUsers.map(user => user.userId)).then(users => {
+        users.forEach(function(users) {
+            if (users.profile_pic != null) {
+                users.profile_pic = config.s3Url + users.profile_pic;
+            } else if (users.profile_pic == null) {
+                users.profile_pic = "/media/SVG/defaultimg.svg";
+            }
+        });
+        // console.log("user", users);
+        socket.emit("onlineUsers", users);
+    });
+
+    //disconnected
+
+    socket.on("disconnect", function() {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+        console.log("onlineUsers BEFORE filter", onlineUsers);
+        onlineUsers = onlineUsers.filter(user => {
+            return user.socketId != socket.id;
+        });
+        console.log("onlineUsers AFTER filter", onlineUsers);
+
+        const stillInList = onlineUsers.filter(user => {
+            // console.log("userif snsdvknd", userId);
+            return user.userId == userId;
+        }).length;
+        console.log("stiilin ilisf", stillInList);
+
+        if (!stillInList) {
+            io.sockets.emit("userLeft", userId);
+        }
+    });
 });
