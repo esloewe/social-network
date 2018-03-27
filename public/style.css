@@ -353,3 +353,37 @@ a:hover {
     height: 250px;
     width: 250px;
 }
+
+/* chat ---------------------------------------------- */
+
+.containerInChat {
+}
+.chat {
+    /* display: flex; */
+    width: 800px;
+    height: 670px;
+    border: 1px solid #fbffff;
+    border-radius: 15px;
+    margin: 0 auto;
+    margin-top: 40px;
+    background-color: #b6dafa;
+    overflow: auto;
+    /* align-items: flex-end; */
+}
+
+#titleInChat {
+    text-align: center;
+    font-size: 30px;
+}
+
+.chat ::placeholder {
+    font-size: 22px;
+    font-style: italic;
+}
+
+.chat textarea {
+    display: flex;
+    align-items: flex-end;
+    font-size: 22px;
+    margin: 0 auto;
+}

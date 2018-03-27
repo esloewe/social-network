@@ -47,3 +47,18 @@ export function userLeft(userId) {
         userId
     };
 }
+
+export function chatMessages(chatMessages) {
+    console.log("chatMessages", chatMessages);
+    return {
+        type: "CHAT_MESSAGES",
+        chatMessages
+    };
+}
+
+export function newChatMessage(msg) {
+    return {
+        type: "NEW_CHAT_MESSAGE",
+        msg
+    };
+}

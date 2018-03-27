@@ -336,6 +336,7 @@ server.listen(8080, function() {
 //CHAT ----------------------------------------------------------------------------------//
 
 let onlineUsers = [];
+let chatMessages = [];
 
 io.on("connection", function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
@@ -370,7 +371,7 @@ io.on("connection", function(socket) {
                 users.profile_pic = "/media/SVG/defaultimg.svg";
             }
         });
-        // console.log("user", users);
+
         socket.emit("onlineUsers", users);
     });
 
@@ -378,20 +379,38 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         console.log(`socket with the id ${socket.id} is now disconnected`);
-        console.log("onlineUsers BEFORE filter", onlineUsers);
+
         onlineUsers = onlineUsers.filter(user => {
             return user.socketId != socket.id;
         });
-        console.log("onlineUsers AFTER filter", onlineUsers);
 
         const stillInList = onlineUsers.filter(user => {
-            // console.log("userif snsdvknd", userId);
             return user.userId == userId;
         }).length;
-        console.log("stiilin ilisf", stillInList);
 
         if (!stillInList) {
             io.sockets.emit("userLeft", userId);
         }
+    });
+    //chat messaging
+
+    socket.emit("chatMessages", chatMessages);
+
+    socket.on("chatMessage", function(msg) {
+        console.log("testing new message", msg);
+        chatMessages.push(msg);
+        if (chatMessages.length > 10) {
+            chatMessages.shift();
+        }
+
+        //query results.rows[0]
+        //results.rows[0].message = msg; //all this in the .then from query also io..
+        io.sockets.emit("newChatMessage", {
+            id: socket.request.session.user.id,
+            firstname: socket.request.session.user.firstname,
+            lastname: socket.request.session.user.lastname,
+            image: socket.request.session.user.image,
+            msg: msg
+        });
     });
 });

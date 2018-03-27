@@ -8,6 +8,7 @@ import OtherProfiles from "./OtherProfiles";
 import JobBoard from "./JobBoard";
 import Friends from "./Friends";
 import Online from "./Online";
+import Chat from "./Chat";
 
 export default class App extends React.Component {
     constructor() {
@@ -99,6 +100,7 @@ export default class App extends React.Component {
                         <Route path="/friends" component={Friends} />
                         <Route path="/jobs" component={JobBoard} />
                         <Route path="/online" component={Online} />
+                        <Route path="/chat" component={Chat} />
                     </div>
                 </div>
             </BrowserRouter>

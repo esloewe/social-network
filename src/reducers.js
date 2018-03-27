@@ -44,7 +44,6 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "ONLINE_USERS") {
-        console.log("inside reducers ONLINE_USERS", action.users);
         return {
             ...state,
             users: action.users
@@ -52,7 +51,6 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "USER_JOINED") {
-        console.log("inside reducers USER_JOINED", state.users);
         return {
             ...state,
             users: [...state.users, action.user]
@@ -60,12 +58,27 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "USER_LEFT") {
-        console.log("inside reducers USER_LEFT", state.users);
         const newUsers = state.users.filter(user => user.id != action.userId);
-        console.log("new userrss", newUsers);
+
         return {
             ...state,
             users: newUsers
+        };
+    }
+
+    if (action.type == "CHAT_MESSAGES") {
+        console.log("action in chat messages", action);
+        return {
+            ...state,
+            chatMessages: action.chatMessages
+        };
+    }
+
+    if (action.type == "NEW_CHAT_MESSAGE") {
+        console.log("one message", action.msg);
+        return {
+            ...state,
+            chatMessages: [...state.chatMessages, action.msg]
         };
     }
 
