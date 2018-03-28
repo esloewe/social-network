@@ -100,7 +100,17 @@ export default class App extends React.Component {
                         <Route path="/friends" component={Friends} />
                         <Route path="/jobs" component={JobBoard} />
                         <Route path="/online" component={Online} />
-                        <Route path="/chat" component={Chat} />
+                        <Route
+                            path="/chat"
+                            render={() => (
+                                <Chat
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    email={this.state.email}
+                                    profilePic={this.state.profilePic}
+                                />
+                            )}
+                        />
                     </div>
                 </div>
             </BrowserRouter>

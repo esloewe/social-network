@@ -357,18 +357,33 @@ a:hover {
 /* chat ---------------------------------------------- */
 
 .containerInChat {
+    display: grid;
+    grid-template-rows: 100px 710px 140px 50px;
+    justify-content: center;
+    align-items: center;
 }
 .chat {
-    /* display: flex; */
     width: 800px;
     height: 670px;
     border: 1px solid #fbffff;
-    border-radius: 15px;
-    margin: 0 auto;
     margin-top: 40px;
-    background-color: #b6dafa;
+    background-color: #e3f2ff;
     overflow: auto;
-    /* align-items: flex-end; */
+}
+
+.messageInChat img {
+    width: 50px;
+}
+
+.messageInChat {
+    /* width: 0;
+    height: 0; */
+    /* left: -20px; */
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 12px solid;
+    border-color: rgb(28, 194, 246) transparent transparent transparent;
 }
 
 #titleInChat {
@@ -376,14 +391,33 @@ a:hover {
     font-size: 30px;
 }
 
-.chat ::placeholder {
+textarea {
     font-size: 22px;
-    font-style: italic;
+    width: 795px;
 }
 
-.chat textarea {
-    display: flex;
-    align-items: flex-end;
+#msgTextInChat {
     font-size: 22px;
-    margin: 0 auto;
+}
+
+#nameInChat {
+    font-size: 16px;
+    color: #5f6162;
+    font-style: italic;
+    margin-top: 30px;
+}
+
+#timeInChat {
+    font-size: 14px;
+    color: #5f6162;
+    font-style: italic;
+    margin-top: 30px;
+}
+
+.containerChatInfo {
+    display: grid;
+    grid-template-columns: 60px 180px 300px;
+}
+
+.messageInChat {
 }

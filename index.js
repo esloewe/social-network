@@ -397,7 +397,7 @@ io.on("connection", function(socket) {
     socket.emit("chatMessages", chatMessages);
 
     socket.on("chatMessage", function(msg) {
-        console.log("testing new message", msg);
+        console.log("testing new message newwwwwwwwww", msg);
         chatMessages.push(msg);
         if (chatMessages.length > 10) {
             chatMessages.shift();
@@ -405,12 +405,6 @@ io.on("connection", function(socket) {
 
         //query results.rows[0]
         //results.rows[0].message = msg; //all this in the .then from query also io..
-        io.sockets.emit("newChatMessage", {
-            id: socket.request.session.user.id,
-            firstname: socket.request.session.user.firstname,
-            lastname: socket.request.session.user.lastname,
-            image: socket.request.session.user.image,
-            msg: msg
-        });
+        io.sockets.emit("newChatMessage", msg);
     });
 });
