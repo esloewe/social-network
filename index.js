@@ -359,6 +359,13 @@ io.on("connection", function(socket) {
 
     if (!alreadyInList) {
         getUserByIdChat([userId]).then(user => {
+            user.forEach(function(user) {
+                if (user.profile_pic != null) {
+                    user.profile_pic = config.s3Url + user.profile_pic;
+                } else if (user.profile_pic == null) {
+                    user.profile_pic = "/media/SVG/defaultimg.svg";
+                }
+            });
             socket.broadcast.emit("userJoined", user.pop());
         });
     }
@@ -397,14 +404,11 @@ io.on("connection", function(socket) {
     socket.emit("chatMessages", chatMessages);
 
     socket.on("chatMessage", function(msg) {
-        console.log("testing new message newwwwwwwwww", msg);
         chatMessages.push(msg);
         if (chatMessages.length > 10) {
             chatMessages.shift();
         }
 
-        //query results.rows[0]
-        //results.rows[0].message = msg; //all this in the .then from query also io..
         io.sockets.emit("newChatMessage", msg);
     });
 });

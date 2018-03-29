@@ -39,9 +39,14 @@ class Chat extends React.Component {
         }
 
         return this.props.chatMessages.map((messageInfo, i) => {
-            console.log("messageeeeeeeee", messageInfo);
+            const classes = {
+                arrow: true,
+                bottom: true,
+                right: true
+            };
             return (
                 <div key={i} className="messageInChat">
+                    <div className={classes} />
                     <p id="msgTextInChat">{messageInfo.message}</p>
                     <div className="containerChatInfo">
                         <img src={messageInfo.image} />

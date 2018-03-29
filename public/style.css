@@ -4,6 +4,7 @@ body {
     margin: 0;
     color: #444;
     font-family: "Open Sans", sans-serif;
+    background-color: #e9ebee;
 }
 
 .error {
@@ -172,7 +173,12 @@ a:hover {
 }
 
 #profilePic img:hover {
-    border: 2px solid pink;
+    border: 2px solid #74afad;
+}
+
+.profilePicCorner button {
+    color: black;
+    border: 1px solid black;
 }
 
 #profilePic {
@@ -182,14 +188,14 @@ a:hover {
 }
 
 .profilePicCorner {
-    max-width: 260px;
+    max-width: 350px;
     display: block;
     float: right;
     border: 2px solid black;
 }
 
 .logoSmallheader {
-    padding: 10px;
+    padding: 20px;
     width: 150px;
     height: 150px;
     float: left;
@@ -199,8 +205,9 @@ a:hover {
 
 .profilePage {
     display: grid;
-    grid-template-columns: 15% 20% 65%;
+    grid-template-columns: 11% 20% 69%;
     height: 100vh;
+    /* background-color: #74afad; */
 }
 
 @media screen and (max-width: 700px) {
@@ -212,7 +219,7 @@ a:hover {
 }
 
 #titleInProfile {
-    margin-left: 20px;
+    margin-left: 60px;
     font-size: 32px;
 }
 
@@ -228,7 +235,7 @@ a:hover {
 }
 
 #aboutMeClick {
-    margin-left: 20px;
+    margin-left: 60px;
     font-size: 20px;
     color: #333;
 }
@@ -237,7 +244,7 @@ a:hover {
 }
 
 #textareaArea {
-    margin-left: 20px;
+    margin-left: 60px;
     margin-top: 15px;
     font-size: 26px;
 }
@@ -247,7 +254,7 @@ a:hover {
 }
 
 #bioInProfile {
-    margin-left: 20px;
+    margin-left: 60px;
     font-size: 18px;
 }
 
@@ -256,19 +263,22 @@ a:hover {
     border-color: #afeaec;
 }
 
+/* nav ----------------------------------------------*/
+
 .sideNav {
-    background-color: #afeaec;
-    /* grid-column: 3;
-    grid-row: 1 / 1; */
+    background-color: #74afad;
+    /* border-right: 3px solid rgb(251, 251, 251); */
 }
 
 #linksSideNav {
     display: grid;
     font-size: 26px;
     margin-top: 20px;
+    padding: 7px;
     color: #333;
     text-decoration: none;
-    justify-items: center;
+    justify-items: end;
+    margin-right: 14px;
 }
 
 #linksSideNav:hover {
@@ -376,14 +386,8 @@ a:hover {
 }
 
 .messageInChat {
-    /* width: 0;
-    height: 0; */
-    /* left: -20px; */
-    right: auto;
-    top: 0px;
-    bottom: auto;
     border: 12px solid;
-    border-color: rgb(28, 194, 246) transparent transparent transparent;
+    border-color: #74afad transparent transparent transparent;
 }
 
 #titleInChat {
@@ -398,6 +402,7 @@ textarea {
 
 #msgTextInChat {
     font-size: 22px;
+    font-weight: bold;
 }
 
 #nameInChat {
